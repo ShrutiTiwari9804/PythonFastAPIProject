@@ -1,0 +1,9 @@
+### Create User
+POST http://127.0.0.1:8000/create_user
+Content-Type: application/json
+
+{
+    "name": "Shruti",
+    "age": 21,
+    "email": "shruti@gmail.com"
+}
