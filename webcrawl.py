@@ -19,7 +19,7 @@ from bs4 import BeautifulSoup
 app = FastAPI()
 
 @app.get("/news")
-def get_news():
+def get_news(page: int = 1 , limit:int = 5 ):
     url = "https://indianexpress.com/"
 
     response = requests.get(url)
@@ -28,9 +28,15 @@ def get_news():
 
     title = []
 
-    for item in soup.find_all("div", class_="entry-meta article-meta"):
+    for item in soup.find_all("span", class_="entry-meta article-meta"):
         title.append(item.text)
 
-        return {
-        "news": title[:5]
+     # Pagination logic
+    start = (page - 1) * limit
+    end = start+limit
+    return {
+        "page":page,
+        "limit": limit ,
+        "total": len(title),
+        "data":title[start:end]
     }
