@@ -1,0 +1,23 @@
+[project]
+name = "pythonfastapiproject"
+version = "0.1.0"
+description = "This is my 1st Project."
+readme = "README.md"
+authors = [
+    { name = "Shruti Pankaj Tiwari", email = "tiwarishruti105@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "aiosqlite>=0.22.1",
+    "fastapi-users[sqlalchemy]>=15.0.5",
+    "imagekitio>=5.10.0",
+    "python-dotenv>=1.2.3",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[project.scripts]
+pythonfastapiproject = "pythonfastapiproject:main"
+
+[build-system]
+requires = ["uv_build>=0.12.20,<0.13.0"]
+build-backend = "uv_build"
