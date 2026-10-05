@@ -4,12 +4,22 @@ from db import Post, create_db_and_tables, get_async_session
 from sqlalchemy.ext.asyncio import AsyncSession
 from contextlib import asynccontextmanager
 from sqlalchemy import select
-from images import imagekit
-from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
+
+from imagekitio import ImageKit
+
+
 import shutil
 import uuid
 import tempfile
+import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
+imagekit = ImageKit (
+    private_key = os.getenv("IMAGEKIT_PRIVATE_KEY")
+)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -68,25 +78,43 @@ async def upload_file(
     temp_file_path = None
 
     try:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splittext(file.filename)[1]) as tem_-file:
+        with tempfile.NamedTemporaryFile(
+            delete=False, 
+            suffix=os.path.splitext(file.filename)[1]
+            ) as temp_file:
 
             temp_file_path = temp_file.name
-            shutil.copy
+            shutil.copyfileobj(file.file, temp_file)
 
+        with open (temp_file_path, "rb") as file_data:
 
+            upload_result = imagekit.files.upload (
+                file = file_data,
+                file_name = file.filename
+            )
+        
 
-    
-    post = Post( 
-        caption = caption,
-        url = "dummy url",
-        file_type = "photo",
-        file_name = "dummy name"
-    )
+       
 
-    session.add(post)
-    await session.commit()
-    await session.refresh(post)
-    return post 
+            post = Post( 
+                caption = caption,
+                url = upload_result.url,
+                file_type = "video" if file.content_type.startswith("video/") else "image",
+                file_name = upload_result.name
+            )
+
+            session.add(post)
+            await session.commit()
+            await session.refresh(post)
+            return post 
+    except Exception as e:
+        await session.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.unlink(temp_file_path)
+        file.file.close()
+
 
 @app.get("/feed")
 async def get_feed(
