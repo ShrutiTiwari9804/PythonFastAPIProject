@@ -12,7 +12,7 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 from db import User, get_user_db
 
 
-secret = 
+SECRET = "SECRET"
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     reset_password_token_secret = SECRET
