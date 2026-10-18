@@ -12,7 +12,7 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 from db import User, get_user_db
 
 
-SECRET= "KITTU_TIWARI"
+secret = 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     reset_password_token_secret = SECRET
@@ -32,7 +32,9 @@ async def get_user_manager (user_db : SQLAlchemyUserDatabase = Depends (get_user
     yield UserManager(user_db)
 
 
-bearer_transport = BearerTransport (tokenUrl = "auth/jwt/login")
+bearer_transport = BearerTransport (
+    tokenUrl = "auth/jwt/login"
+    )
 
 def get_jwt_strategy():
     return JWTStrategy (secret= SECRET , lifetime_seconds=3600)
