@@ -1,0 +1,53 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name = "viewport" content = "width=device=width, initial-scale=1.0">
+    <title>PostFlow - Social Feed</title>
+    <link rel = "stylesheet" href = "style.css">
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+        <h1>PostFlow 🚀</h1>
+        <div id="auth-section">
+            <span id="user-email"></span>
+            <button id="logout-btn" style="display:none;">Logout</button>
+        </div>
+    </header>
+
+
+    <main class="container">
+
+        <section id="login-section" class="card">
+            <h2>Login</h2>
+            <form id="login-section" class="card">
+                <input type="email" id="login-email" placeholder="Email required">
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>            
+            
+            </form>
+        </section>
+
+        <section id="upload-section" class="card" style="display:none;">
+        <h2>Create New Post</h2>
+        <form id="upload-form">
+            <textarea id="post-cation" placeholder="Write a Caption....."></textarea>
+            <input type="file" id="post-file" required>
+            <button type="submit">Upload Post</button>
+        </form>  
+        </section>
+
+
+        <section id="feed-section">
+            <h2>Feed</h2>
+            <div id="posts-container">
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
